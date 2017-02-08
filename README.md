@@ -140,6 +140,20 @@ const config = conform(process.env, schema)
 module.exports = config
 ```
 
+#### Default Values
+
+You can supply the environment with a default value to a variable if such variable doesn't exist. If it does, the value from the environment variable will be used.
+
+```js
+const schema = {
+  DEFAULT_LOCALE: string,
+  SUPPORTED_LOCALES: array,
+  TOKEN_EXPIRATION: 3600, // in secs
+}
+```
+
+This is particularly useful when you have some constant (here we have the token expiration in seconds) that is being used in more places over your code and will need to be changed occasionally without intervening the code (eg. in testing environment).
+
 ## Other Tools
 
 - https://www.npmjs.com/package/getenv — Slightly different concept, very good solution.

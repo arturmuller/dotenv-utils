@@ -30,18 +30,19 @@ const object = (s) => s
 
 const conform = (env, schema) => {
   return Object.keys(schema).reduce((acc, key) => {
-    const transform = schema[key]
-    const type = typeof transform
+    const val = schema[key]
+
+    const type = Array.isArray(val)
+      ? "array"
+      : typeof val
 
     if (type !== "function") {
-      throw new Error(
-        `Invalid schema. Conversion functions should be provided in ` +
-        `the schema object. Instead saw type "${type}" at the ` +
-        `"${key}" key.`
-      )
+      if (env[key]) acc[key] = eval(`${type}(env[key])`)
+      else acc[key] = schema[key]
+    } else {
+      acc[key] = val(env[key])
     }
 
-    acc[key] = transform(env[key])
     return acc
   }, {})
 }
