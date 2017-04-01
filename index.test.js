@@ -49,6 +49,8 @@ test("conform", (t) => {
     NUMBER: number,
     ARRAY: array,
     OBJECT: object,
+    DEFAULT: "quuz",
+    OVERWRITTEN: ["quux"],
     MISSING: array,
   }
 
@@ -58,6 +60,7 @@ test("conform", (t) => {
     NUMBER: "123",
     ARRAY: "foo, bar, baz",
     OBJECT: "beep:boop, boom:bam",
+    OVERWRITTEN: "qux",
   }
 
   const expected = {
@@ -66,16 +69,12 @@ test("conform", (t) => {
     NUMBER: 123,
     ARRAY: ["foo", "bar", "baz"],
     OBJECT: {beep: "boop", boom: "bam"},
+    DEFAULT: "quuz",
+    OVERWRITTEN: ["qux"],
     MISSING: [],
   }
 
   const result = conform(env, schema)
 
   t.deepEqual(result, expected)
-
-  const badSchema = {
-    STRING: "not a function",
-  }
-
-  t.throws(() => conform(env, badSchema))
 })
